@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/IgnacioBO/go_lib_response/response"
 	"github.com/IgnacioBO/gomicro_enrollment/internal/enrollment"
@@ -31,6 +32,20 @@ func NewUserHTTPServer(ctx context.Context, endpoints enrollment.Endpoints) http
 		encodeResponse,
 		opciones...,
 	)).Methods("POST")
+
+	router.Handle("/enrollments", httptransport.NewServer(
+		endpoint.Endpoint(endpoints.GetAll),
+		decodeGetAllEnrollment,
+		encodeResponse,
+		opciones...,
+	)).Methods("GET")
+
+	router.Handle("/enrollments/{id}", httptransport.NewServer(
+		endpoint.Endpoint(endpoints.Update),
+		decodeUpdateEnrollment,
+		encodeResponse,
+		opciones...,
+	)).Methods("PATCH")
 
 	return router
 }
@@ -66,5 +81,37 @@ func encodeError(_ context.Context, err error, w http.ResponseWriter) {
 	//Entonces podemos transofrmar un error a una interfac propia con MAS METODOS Y MAS DATOS UE UN ERROR NORMAL!
 	w.WriteHeader(respInterface.StatusCode())
 	_ = json.NewEncoder(w).Encode(respInterface)
+
+}
+func decodeGetAllEnrollment(_ context.Context, r *http.Request) (interface{}, error) {
+	fmt.Println("decode getall enroll")
+	variablesURL := r.URL.Query()
+
+	//Ahora obtendremos el limit y la pagina desde los parametros
+	limit, _ := strconv.Atoi(variablesURL.Get("limit"))
+	page, _ := strconv.Atoi(variablesURL.Get("page"))
+
+	getReqAll := enrollment.GetAllRequest{
+		UserID:   variablesURL.Get("user_id"),
+		CourseID: variablesURL.Get("course_id"),
+		Limit:    limit,
+		Page:     page,
+	}
+
+	return getReqAll, nil
+}
+
+func decodeUpdateEnrollment(_ context.Context, r *http.Request) (interface{}, error) {
+	var reqStruct enrollment.UpdateRequest
+
+	err := json.NewDecoder(r.Body).Decode(&reqStruct)
+	if err != nil {
+		return nil, response.BadRequest(fmt.Sprintf("invalid request format: '%v'", err.Error()))
+	}
+
+	variablesPath := mux.Vars(r)
+	reqStruct.ID = variablesPath["id"]
+
+	return reqStruct, nil
 
 }
