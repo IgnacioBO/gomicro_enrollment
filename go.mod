@@ -5,7 +5,7 @@ go 1.23.4
 require (
 	github.com/IgnacioBO/go_lib_response v0.0.2
 	github.com/IgnacioBO/go_micro_sdk v0.0.1
-	github.com/IgnacioBO/gomicro_domain v0.0.2
+	github.com/IgnacioBO/gomicro_domain v0.0.3
 	github.com/IgnacioBO/gomicro_meta v0.0.1
 	github.com/go-kit/kit v0.13.0
 	github.com/gorilla/mux v1.8.1

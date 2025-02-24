@@ -46,7 +46,7 @@ func (s service) Create(ctx context.Context, userID, courseID string) (*domain.E
 	enrollmentNuevo := &domain.Enrollment{
 		UserID:   userID,
 		CourseID: courseID,
-		Status:   "P",
+		Status:   domain.Pending,
 	}
 
 	//Haremos los get de user y course, si da error devolvemos el error
@@ -84,6 +84,15 @@ func (s service) Count(ctx context.Context, filtros Filtros) (int, error) {
 
 func (s service) Update(ctx context.Context, id string, status *string) error {
 	s.log.Println("Update user service")
+
+	if status != nil {
+		switch domain.EnrollStatus(*status) { //Aqui transforamos el status en domain.EnrollStatus
+		case domain.Pending, domain.Active, domain.Studying, domain.Inactive:
+		default:
+			return ErrInvalidStatus{*status}
+		}
+	}
+
 	err := s.repo.Update(ctx, id, status)
 	return err
 }
