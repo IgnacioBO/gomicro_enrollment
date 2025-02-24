@@ -13,6 +13,9 @@ import (
 	"github.com/IgnacioBO/gomicro_enrollment/pkg/bootstrap"
 	"github.com/IgnacioBO/gomicro_enrollment/pkg/handler" //Manejar ruteo facilmente (paths y metodos)
 	"github.com/joho/godotenv"
+
+	courseSdk "github.com/IgnacioBO/go_micro_sdk/course"
+	userSdk "github.com/IgnacioBO/go_micro_sdk/user"
 	//Driver mysql para gorm
 	//Para manejar bbdd facilmente con strcut y funciones (en vez de querys directa)
 )
@@ -42,12 +45,16 @@ func main() {
 		log.Fatal(err)
 	}
 
+	//Aqui instanciaremos los SDK de course y user (SDK sirve para poder pegarles a las APIS de user y course son funciones)
+	courseTrans := courseSdk.NewHttpClient(os.Getenv("API_COURSE_URL"), "")
+	userTrans := userSdk.NewHttpClient(os.Getenv("API_USER_URL"), "")
+
 	//Antes de repo, servicio, endpont, generamos un contexto
 	ctx := context.Background()
 	//Generaremos un objeto repo (que recibe la bbdd y logger) que luego le pasaremos a la capa servicio
 	enrollmentRepo := enrollment.NewRepo(l, db)
 	//Crearemos un objeto de tipo servicio pasandole un objeto Repository (y logger) para luego pasarselo a la capa enpdoint
-	enrollmentService := enrollment.NewService(l, enrollmentRepo)
+	enrollmentService := enrollment.NewService(l, userTrans, courseTrans, enrollmentRepo)
 	//Crearemo un objeto de tipo endpoint y le pasamos el objeto creado (Service). Ademas le pasamos un user.Config
 	enrollmentEndpoint := enrollment.MakeEndpoints(enrollmentService, enrollmentConfig)
 	h := handler.NewUserHTTPServer(ctx, enrollmentEndpoint)

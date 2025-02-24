@@ -1,7 +1,11 @@
 filippo.io/edwards25519 v1.1.0 h1:FNf4tywRC1HmFuKW5xopWpigGjJKiJSV0Cqo0cJWDaA=
 filippo.io/edwards25519 v1.1.0/go.mod h1:BxyFTGdWcka3PhytdK4V28tE5sGfRvvvRV7EaN4VDT4=
+github.com/IgnacioBO/go_http_client v0.0.2 h1:c8pIUuMB4Vm6rJPrR49hhrjjQSz+MSov3xNJ2vILJmQ=
+github.com/IgnacioBO/go_http_client v0.0.2/go.mod h1:mMJQn0Q05DqMLjaGCyCcnnJyNm/5foprZ9L5J9ubkao=
 github.com/IgnacioBO/go_lib_response v0.0.2 h1:LGUeJzw5gqrFvyCflZDqsusZWqKMCdeFbZ/7YYZwxgs=
 github.com/IgnacioBO/go_lib_response v0.0.2/go.mod h1:cV03c5A6JhRr0gxaUvkV8djLtpWscF1dHec3PDMQyAM=
+github.com/IgnacioBO/go_micro_sdk v0.0.1 h1:Wyy7WR4GpM+AZZnHY1CerHteya1imRnoXMYbX5z1Yak=
+github.com/IgnacioBO/go_micro_sdk v0.0.1/go.mod h1:9B/Td7Qf4NMf1pxFyaMzr1pqtuKUfoh89o/zz3O7p+U=
 github.com/IgnacioBO/gomicro_domain v0.0.2 h1:FWpmYC7pAVXFT0MAo6L5U0Ia1Xx4AOpDDhVp/LsVxBo=
 github.com/IgnacioBO/gomicro_domain v0.0.2/go.mod h1:REIYVS2D0FWdq1gWgWA8qfoSiCBMhV6UcvMrXFiklOU=
 github.com/IgnacioBO/gomicro_meta v0.0.1 h1:WN+thc9qGqGCtVM5jY1OZi0FLkIJYx+gdyz6SOGtX3Q=

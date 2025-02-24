@@ -5,6 +5,9 @@ import (
 	"log"
 
 	"github.com/IgnacioBO/gomicro_domain/domain"
+
+	courseSdk "github.com/IgnacioBO/go_micro_sdk/course"
+	userSdk "github.com/IgnacioBO/go_micro_sdk/user"
 )
 
 type Service interface {
@@ -22,14 +25,18 @@ type (
 )
 
 type service struct {
-	log  *log.Logger
-	repo Repository
+	log         *log.Logger
+	userTrans   userSdk.Transport
+	courseTrans courseSdk.Transport
+	repo        Repository
 }
 
-func NewService(log *log.Logger, repo Repository) Service {
+func NewService(log *log.Logger, userTrans userSdk.Transport, courseTrans courseSdk.Transport, repo Repository) Service {
 	return &service{
-		log:  log,
-		repo: repo,
+		log:         log,
+		userTrans:   userTrans,
+		courseTrans: courseTrans,
+		repo:        repo,
 	}
 }
 
@@ -42,8 +49,17 @@ func (s service) Create(ctx context.Context, userID, courseID string) (*domain.E
 		Status:   "P",
 	}
 
+	//Haremos los get de user y course, si da error devolvemos el error
+	_, err := s.userTrans.Get(userID)
+	if err != nil {
+		return nil, err
+	}
+
+	if _, err := s.courseTrans.Get(courseID); err != nil {
+		return nil, err
+	}
 	//Le pasamo al repo el domain.Course (del domain.go) a la capa repo a la funcion Create (que recibe puntero)
-	err := s.repo.Create(ctx, enrollmentNuevo)
+	err = s.repo.Create(ctx, enrollmentNuevo)
 	//Si hay un error (por ejemplo al insertar, se devuelve el error y la capa endpoitn lo maneja con un status code y todo)
 	if err != nil {
 		return nil, err
