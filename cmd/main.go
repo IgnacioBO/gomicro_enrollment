@@ -45,9 +45,13 @@ func main() {
 		log.Fatal(err)
 	}
 
+	//Aqui obtenemo el token necesario (aqui directo de de env, pero podria tener otra logica)
+	courseToken := os.Getenv("API_COURSE_TOKEN")
+	courseUser := os.Getenv("API_USER_TOKEN")
+
 	//Aqui instanciaremos los SDK de course y user (SDK sirve para poder pegarles a las APIS de user y course son funciones)
-	courseTrans := courseSdk.NewHttpClient(os.Getenv("API_COURSE_URL"), "")
-	userTrans := userSdk.NewHttpClient(os.Getenv("API_USER_URL"), "")
+	courseTrans := courseSdk.NewHttpClient(os.Getenv("API_COURSE_URL"), courseToken)
+	userTrans := userSdk.NewHttpClient(os.Getenv("API_USER_URL"), courseUser)
 
 	//Antes de repo, servicio, endpont, generamos un contexto
 	ctx := context.Background()
