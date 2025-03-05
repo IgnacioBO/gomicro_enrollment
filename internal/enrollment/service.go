@@ -85,7 +85,7 @@ func (s service) Count(ctx context.Context, filtros Filtros) (int, error) {
 func (s service) Update(ctx context.Context, id string, status *string) error {
 	s.log.Println("Update user service")
 
-	if status != nil {
+	if status != nil { //validamos que no venga nill (pq viene como puntero 'status *string)
 		switch domain.EnrollStatus(*status) { //Aqui transforamos el status en domain.EnrollStatus
 		case domain.Pending, domain.Active, domain.Studying, domain.Inactive:
 		default:
