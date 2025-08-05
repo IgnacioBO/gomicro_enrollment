@@ -1,0 +1,21 @@
+.PHONY: install start test run bench cover # Esto es para declarar objetivos que no son archivos/carpetas, porque si tengo una carpeta con el mismo nombre, Make la va a tomar como un archivo y no va a ejecutar la tarea
+
+install:
+	go mod tidy
+	docker compose up -d
+
+start:
+	go run cmo/main.go
+
+test:
+	go test ./... -v
+
+run:
+	go run main.go
+	
+bench:
+	go test -bench='.' ./...
+
+cover:
+	go test ./... -coverprofile coverage.out
+	go tool cover -html coverage.out -o coverage.html

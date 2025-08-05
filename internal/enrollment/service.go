@@ -64,6 +64,7 @@ func (s service) Create(ctx context.Context, userID, courseID string) (*domain.E
 	if err != nil {
 		return nil, err
 	}
+	s.log.Printf("service - enrollment created with id: %s\n", enrollmentNuevo.ID)
 	return enrollmentNuevo, nil
 }
 
@@ -74,6 +75,7 @@ func (s service) GetAll(ctx context.Context, filtros Filtros, offset, limit int)
 	if err != nil {
 		return nil, err
 	}
+	s.log.Printf("service - all enrollments retrieved, rows affected: %d\n", len(allEnroll))
 	return allEnroll, nil
 }
 
@@ -92,7 +94,7 @@ func (s service) Update(ctx context.Context, id string, status *string) error {
 			return ErrInvalidStatus{*status}
 		}
 	}
-
+	s.log.Printf("service - updating enrollment with id: %s, status: %s\n", id, *status)
 	err := s.repo.Update(ctx, id, status)
 	return err
 }

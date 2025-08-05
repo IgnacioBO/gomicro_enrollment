@@ -101,7 +101,7 @@ func (r *repo) Update(ctx context.Context, id string, status *string) error {
 		return result.Error
 	}
 	if result.RowsAffected == 0 {
-		r.log.Println("enrollment with id: %s not found, rows affected: %d\n", id, result.RowsAffected)
+		r.log.Printf("enrollment with id: %s not found, rows affected: %d\n", id, result.RowsAffected)
 		return ErrEnrollNotFound{id}
 	}
 	r.log.Printf("enrollment updated with id: %s, rows affected: %d\n", id, result.RowsAffected)
