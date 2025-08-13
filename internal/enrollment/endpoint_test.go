@@ -1,5 +1,8 @@
 package enrollment_test
 
+//Test integrales -> Probaremos endpoints y servicios en conjuntos
+//Pero mockearemos el repositorio y el sdk
+
 import (
 	"context"
 	"errors"
